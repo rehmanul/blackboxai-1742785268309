@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Amazon Store</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amazon: {
+                            primary: '#232F3E',
+                            secondary: '#37475A',
+                            accent: '#FF9900'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-amazon-primary text-white">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <h1 class="text-3xl font-bold">Amazon Best Sellers</h1>
+            <p class="mt-2">Curated collection of top-rated products</p>
+        </div>
+    </header>
+
+    <!-- Filters -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                    <select id="categoryFilter" class="w-full border rounded-md p-2">
+                        <option value="">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="smart-home">Smart Home</option>
+                        <option value="fitness">Fitness & Health</option>
+                        <option value="kitchen">Kitchen</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
+                    <select id="priceFilter" class="w-full border rounded-md p-2">
+                        <option value="">All Prices</option>
+                        <option value="0-50">Under $50</option>
+                        <option value="50-100">$50 - $100</option>
+                        <option value="100-200">$100 - $200</option>
+                        <option value="200+">$200+</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                    <select id="ratingFilter" class="w-full border rounded-md p-2">
+                        <option value="">All Ratings</option>
+                        <option value="4.5">4.5+ Stars</option>
+                        <option value="4">4+ Stars</option>
+                        <option value="3">3+ Stars</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Products will be dynamically inserted here -->
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="flex justify-center space-x-2 mt-8">
+            <!-- Pagination buttons will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Product Database
+        const products = [
+            {
+                id: 1,
+                name: "Echo Dot (5th Gen)",
+                price: 49.99,
+                image: "https://m.media-amazon.com/images/I/714Rq4k05UL._AC_SL1500_.jpg",
+                category: "smart-home",
+                rating: 4.5,
+                reviews: 123456,
+                description: "Smart speaker with improved audio"
+            },
+            {
+                id: 2,
+                name: "Fire TV Stick 4K Max",
+                price: 59.99,
+                image: "https://m.media-amazon.com/images/I/61QoZCzMx3L._AC_SL1000_.jpg",
+                category: "electronics",
+                rating: 4.5,
+                reviews: 89732,
+                description: "Streaming device with Wi-Fi 6"
+            },
+            {
+                id: 3,
+                name: "Kindle Paperwhite",
+                price: 139.99,
+                image: "https://m.media-amazon.com/images/I/61Vw6bmLVPL._AC_SL1000_.jpg",
+                category: "electronics",
+                rating: 5,
+                reviews: 145890,
+                description: "6.8\" display with adjustable light"
+            },
+            {
+                id: 4,
+                name: "Ring Video Doorbell",
+                price: 99.99,
+                image: "https://m.media-amazon.com/images/I/61cTd45AJfL._SL1000_.jpg",
+                category: "smart-home",
+                rating: 4.5,
+                reviews: 98456,
+                description: "1080p HD video doorbell"
+            },
+            {
+                id: 5,
+                name: "AirPods Pro",
+                price: 249.00,
+                image: "https://m.media-amazon.com/images/I/61SUj2aKoEL._AC_SL1500_.jpg",
+                category: "electronics",
+                rating: 5,
+                reviews: 127890,
+                description: "Active Noise Cancellation"
+            },
+            {
+                id: 6,
+                name: "Instant Pot Duo",
+                price: 89.99,
+                image: "https://m.media-amazon.com/images/I/71WtwEvwzOS._AC_SL1500_.jpg",
+                category: "kitchen",
+                rating: 4.5,
+                reviews: 167234,
+                description: "7-in-1 Electric Pressure Cooker"
+            }
+        ];
+
+        // Functions
+        function renderProducts(filteredProducts) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = filteredProducts.map(product => `
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition hover:-translate-y-1">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-contain p-4">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">${product.name}</h3>
+                        <p class="text-gray-600 mb-4">${product.description}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold text-amazon-accent">$${product.price}</span>
+                            <div class="text-right">
+                                <div class="text-yellow-400 text-lg">
+                                    ${'★'.repeat(Math.floor(product.rating))}${product.rating % 1 ? '½' : ''}
+                                </div>
+                                <div class="text-green-600 text-sm">
+                                    ${product.reviews.toLocaleString()} reviews
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts() {
+            const category = document.getElementById('categoryFilter').value;
+            const price = document.getElementById('priceFilter').value;
+            const rating = parseFloat(document.getElementById('ratingFilter').value) || 0;
+
+            return products.filter(product => {
+                if (category && product.category !== category) return false;
+                if (rating && product.rating < rating) return false;
+                if (price) {
+                    const [min, max] = price.split('-').map(p => p === '+' ? Infinity : Number(p));
+                    if (product.price < min || product.price > max) return false;
+                }
+                return true;
+            });
+        }
+
+        // Event Listeners
+        ['categoryFilter', 'priceFilter', 'ratingFilter'].forEach(id => {
+            document.getElementById(id).addEventListener('change', () => {
+                const filtered = filterProducts();
+                renderProducts(filtered);
+            });
+        });
+
+        // Initial render
+        renderProducts(products);
+    </script>
+</body>
+</html>
