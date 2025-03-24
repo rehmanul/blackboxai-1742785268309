@@ -1,0 +1,82 @@
+/*
+Theme Name: Rehmanul Pro Theme
+Theme URI: https://rehmanul.pro
+Author: Md Rehmanul Alam
+Author URI: https://rehmanul.pro
+Description: A modern theme for Python & AI expert portfolio
+Version: 1.0
+*/
+
+/* Base styles will be handled by Tailwind CSS */
+/* Custom styles for WordPress specific elements */
+
+.wp-block {
+    max-width: 100%;
+}
+
+/* WordPress menu styling */
+.menu-item a {
+    @apply text-gray-600 hover:text-blue-500 transition-colors duration-200;
+}
+
+/* WordPress content area */
+.entry-content {
+    @apply prose max-w-none;
+}
+
+/* WordPress alignment classes */
+.alignfull {
+    @apply w-screen relative left-1/2 right-1/2 -mx-1/2;
+}
+
+.alignwide {
+    @apply max-w-screen-xl mx-auto;
+}
+
+/* WordPress image classes */
+.wp-block-image img {
+    @apply max-w-full h-auto;
+}
+
+/* Custom animations */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Project cards */
+.project-card {
+    @apply bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-200;
+}
+
+.project-card:hover {
+    @apply transform -translate-y-1 shadow-xl;
+}
+
+/* Social media icons */
+.social-icon {
+    @apply text-gray-600 hover:text-blue-500 transition-colors duration-200 text-3xl;
+}
+
+/* Custom button styles */
+.custom-button {
+    @apply inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm transition-all duration-200;
+}
+
+.custom-button-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700 hover:transform hover:-translate-y-0.5;
+}
+
+.custom-button-secondary {
+    @apply bg-white text-blue-600 hover:bg-blue-50 hover:transform hover:-translate-y-0.5;
+}
